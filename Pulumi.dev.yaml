@@ -1,2 +1,4 @@
 config:
   azure-native:location: westeurope
+  pulumi-azure-start:storageAccountTier: Standard_LRS
+  pulumi-azure-start:env: dev

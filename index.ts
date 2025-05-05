@@ -2,22 +2,21 @@ import * as pulumi from "@pulumi/pulumi";
 import * as resources from "@pulumi/azure-native/resources";
 import * as storage from "@pulumi/azure-native/storage";
 
+const config = new pulumi.Config();
+const environment = config.require("env");
+const storageAccountTier = config.require("storageAccountTier");
+
 // Create an Azure Resource Group
-const resourceGroup = new resources.ResourceGroup("resourceGroup");
+const resourceGroup = new resources.ResourceGroup("resourceGroup", {
+    resourceGroupName: `rg-${environment}`,
+});
 
 // Create an Azure resource (Storage Account)
 const storageAccount = new storage.StorageAccount("sa", {
+    accountName: `sapulumitest${environment}`,
     resourceGroupName: resourceGroup.name,
     sku: {
-        name: storage.SkuName.Standard_LRS,
+        name: storageAccountTier,
     },
     kind: storage.Kind.StorageV2,
 });
-
-// Export the primary key of the Storage Account
-const storageAccountKeys = storage.listStorageAccountKeysOutput({
-    resourceGroupName: resourceGroup.name,
-    accountName: storageAccount.name
-});
-
-export const primaryStorageKey = storageAccountKeys.keys[0].value;
