@@ -2,3 +2,4 @@ config:
   azure-native:location: westeurope
   pulumi-azure-start:storageAccountTier: Standard_LRS
   pulumi-azure-start:env: dev
+  pulumi-azure-start:tenantId: 24f5508a-2b9c-4107-abf0-40dd4bb465d0
