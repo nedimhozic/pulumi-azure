@@ -1,7 +1,8 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as resources from "@pulumi/azure-native/resources";
 import * as storage from "@pulumi/azure-native/storage";
-import * as keyvault from "@pulumi/azure-native/keyvault";
+
+import { KeyVaultComponent } from "./components/KeyVaultComponent";
 
 const config = new pulumi.Config();
 const environment = config.require("env");
@@ -23,27 +24,12 @@ const storageAccount = new storage.StorageAccount("sa", {
     kind: storage.Kind.StorageV2,
 });
 
-const keyVault = new keyvault.Vault("keyVault", {
-    properties: {
-        enableRbacAuthorization: true,
-        enableSoftDelete: true,
-        enabledForDeployment: false,
-        enabledForDiskEncryption: false,
-        enabledForTemplateDeployment: false,
-        networkAcls: {
-            bypass: keyvault.NetworkRuleBypassOptions.None,
-            defaultAction: keyvault.NetworkRuleAction.Allow,
-        },
-        publicNetworkAccess: "Enabled",
-        sku: {
-            family: keyvault.SkuFamily.A,
-            name: keyvault.SkuName["Standard"],
-        },
-        softDeleteRetentionInDays: 90,
-        tenantId,
-    },
+// Create a Key Vault using the KeyVaultComponent
+const keyVaultComponent = new KeyVaultComponent("keyVault", {
     resourceGroupName: resourceGroup.name,
-    vaultName: `kv-pulumi-test-${environment}`
-}, {
-    protect: true,
+    vaultName: `kv-pulumi-test2-${environment}`,
+    secrets: {
+    "dbPassword": "supersecret",
+    "apiKey": "abcdef123",
+  },
 });
