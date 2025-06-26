@@ -4,7 +4,7 @@ import * as storage from "@pulumi/azure-native/storage";
 
 import { KeyVaultComponent } from "./components/KeyVaultComponent";
 
-const config = new pulumi.Config();
+const config = new pulumi.Config("pulumi-azure-start");
 const environment = config.require("env");
 const storageAccountTier = config.require("storageAccountTier");
 const tenantId = config.require("tenantId");

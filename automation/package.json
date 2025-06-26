@@ -1,0 +1,21 @@
+{
+  "name": "automation",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "scripts": {
+    "start": "./node_modules/ts-node/dist/bin.js index.ts"
+  },
+  "keywords": [],
+  "author": "Nedim Hozic",
+  "license": "ISC",
+  "dependencies": {
+    "@pulumi/azure-native": "^3.5.1",
+    "@pulumi/pulumi": "^3.175.0",
+    "upath": "^2.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.30",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}
