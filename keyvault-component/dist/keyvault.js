@@ -1,38 +1,29 @@
-import * as pulumi from "@pulumi/pulumi";
-import * as keyvault from "@pulumi/azure-native/keyvault";
-
-const config = new pulumi.Config();
-const tenantId = config.require("tenantId");
-
-interface KeyVaultComponentArgs {
-    resourceGroupName: pulumi.Input<string>;
-    vaultName: pulumi.Input<string>;
-    secrets?: { [key: string]: pulumi.Input<string> };
-}
-
-export class KeyVaultComponent extends pulumi.ComponentResource {
-
-    constructor(name: string, args: KeyVaultComponentArgs, opts?: pulumi.ComponentResourceOptions) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.KeyVaultComponent = void 0;
+const pulumi = require("@pulumi/pulumi");
+const azure = require("@pulumi/azure-native");
+class KeyVaultComponent extends pulumi.ComponentResource {
+    constructor(name, args, opts) {
         super("custom:component:KeyVaultComponent", name, {}, opts);
-
-        const kv = new keyvault.Vault(name, {
+        const kv = new azure.keyvault.Vault(name, {
             vaultName: args.vaultName,
             resourceGroupName: args.resourceGroupName,
             properties: {
-                tenantId,
+                tenantId: args.tenantId,
                 enableRbacAuthorization: true,
                 enableSoftDelete: true,
                 enabledForDeployment: false,
                 enabledForDiskEncryption: false,
                 enabledForTemplateDeployment: false,
                 networkAcls: {
-                    bypass: keyvault.NetworkRuleBypassOptions.None,
-                    defaultAction: keyvault.NetworkRuleAction.Allow,
+                    bypass: azure.keyvault.NetworkRuleBypassOptions.None,
+                    defaultAction: azure.keyvault.NetworkRuleAction.Allow,
                 },
-                publicNetworkAccess: keyvault.PublicNetworkAccess.Enabled,
+                publicNetworkAccess: azure.keyvault.PublicNetworkAccess.Enabled,
                 sku: {
-                    family: keyvault.SkuFamily.A,
-                    name: keyvault.SkuName.Standard,
+                    family: azure.keyvault.SkuFamily.A,
+                    name: azure.keyvault.SkuName.Standard,
                 },
                 softDeleteRetentionInDays: 90,
             },
@@ -40,10 +31,9 @@ export class KeyVaultComponent extends pulumi.ComponentResource {
             parent: this,
             protect: true,
         });
-
         if (args.secrets) {
             Object.entries(args.secrets).forEach(([secretName, value]) => {
-                new keyvault.Secret(secretName, {
+                new azure.keyvault.Secret(secretName, {
                     vaultName: kv.name,
                     resourceGroupName: args.resourceGroupName,
                     properties: {
@@ -54,7 +44,8 @@ export class KeyVaultComponent extends pulumi.ComponentResource {
                 });
             });
         }
-
         this.registerOutputs();
     }
 }
+exports.KeyVaultComponent = KeyVaultComponent;
+//# sourceMappingURL=keyvault.js.map

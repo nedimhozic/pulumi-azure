@@ -2,7 +2,7 @@ import * as pulumi from "@pulumi/pulumi";
 import * as resources from "@pulumi/azure-native/resources";
 import * as storage from "@pulumi/azure-native/storage";
 
-import { KeyVaultComponent } from "./components/KeyVaultComponent";
+import { KeyVaultComponent } from "@nedimhozic/pulumi-azure-keyvault";
 
 const config = new pulumi.Config("pulumi-azure-start");
 const environment = config.require("env");
@@ -26,6 +26,7 @@ const storageAccount = new storage.StorageAccount("sa", {
 
 // Create a Key Vault using the KeyVaultComponent
 const keyVaultComponent = new KeyVaultComponent("keyVault", {
+    tenantId,
     resourceGroupName: resourceGroup.name,
     vaultName: `kv-pulumi-test2-${environment}`,
     secrets: {
