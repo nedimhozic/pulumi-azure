@@ -1,13 +1,11 @@
 {
     "compilerOptions": {
         "strict": true,
-        "outDir": "dist",
+        "outDir": "bin",
         "target": "es2020",
         "module": "commonjs",
         "moduleResolution": "node",
         "sourceMap": true,
-        "declaration": true,
-        "declarationMap": true,
         "experimentalDecorators": true,
         "pretty": true,
         "noFallthroughCasesInSwitch": true,
@@ -15,7 +13,6 @@
         "forceConsistentCasingInFileNames": true
     },
     "files": [
-        "index.ts",
-        "keyvault.ts"
+        "index.ts"
     ]
 }
